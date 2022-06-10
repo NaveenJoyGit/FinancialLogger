@@ -1,6 +1,6 @@
 package com.financialog.dto;
 
-public class Stock extends FinancialInstrument {
+public class StockDto extends FinancialInstrument {
 	
 	Integer id;
 	String name;

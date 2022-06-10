@@ -2,10 +2,10 @@ package com.financialog.dto;
 
 import java.sql.Date;
 
-public class Trade {
+public class TradeDto {
 	
 	Integer id;
-	Stock stock;
+	StockDto stock;
 	TradeDetails details;
 	String status;
 	Date creationDate;
