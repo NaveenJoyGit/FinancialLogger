@@ -1,4 +1,4 @@
-package com.financialog.repositories;
+package com.financialog.repository;
 
 import com.financialog.entity.Stock;
 import org.springframework.data.jpa.repository.JpaRepository;
