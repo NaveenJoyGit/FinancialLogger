@@ -44,6 +44,7 @@ public class ApplicationSecurityConfigurator extends WebSecurityConfigurerAdapte
         http
                 .authorizeRequests()
                 .antMatchers("/css/**", "/js/**", "/images/**").permitAll()
+                .antMatchers("/api/public/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
