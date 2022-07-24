@@ -2,7 +2,7 @@ package com.financialog.dto;
 
 public class CommonResponse<T> {
 	
-	private ResponseCodeEnum responseCode;
+	private String responseCode;
 	
 	private String responseMessage;
 	
@@ -12,17 +12,17 @@ public class CommonResponse<T> {
 		
 	}
 	
-	public CommonResponse(ResponseCodeEnum code, String message, T data) {
+	public CommonResponse(String code, String message, T data) {
 		this.responseCode = code;
 		this.responseMessage = message;
 		this.responseData = data;
 	}
 	
-	public ResponseCodeEnum getResponseCode() {
+	public String getResponseCode() {
 		return responseCode;
 	}
 
-	public void setResponseCode(ResponseCodeEnum responseCode) {
+	public void setResponseCode(String responseCode) {
 		this.responseCode = responseCode;
 	}
 

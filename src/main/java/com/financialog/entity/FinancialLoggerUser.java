@@ -1,13 +1,13 @@
 package com.financialog.entity;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Collection;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 public class FinancialLoggerUser implements UserDetails {
@@ -19,6 +19,14 @@ public class FinancialLoggerUser implements UserDetails {
     private String firstName;
     private String lastName;
     private String password;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> roles;
 
     public Long getId() {
         return id;
@@ -44,12 +52,21 @@ public class FinancialLoggerUser implements UserDetails {
         return lastName;
     }
 
+
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     public FinancialLoggerUser(Long id, String username, String firstName, String lastName, String password) {
@@ -65,7 +82,8 @@ public class FinancialLoggerUser implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return this.roles.stream().map(roles -> new SimpleGrantedAuthority(roles.getRoleName()))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -75,7 +93,7 @@ public class FinancialLoggerUser implements UserDetails {
 
     @Override
     public String getUsername() {
-        return null;
+        return this.username;
     }
 
     @Override

@@ -4,8 +4,10 @@ import com.financialog.filters.JwtFilter;
 import com.financialog.repository.FinancialLoggerUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -15,17 +17,22 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import javax.servlet.http.HttpServletResponse;
 
+@Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ApplicationSecurityConfigurator extends WebSecurityConfigurerAdapter {
 
     private final FinancialLoggerUserRepository financialLoggerUserRepository;
     private final JwtFilter jwtFilter;
+    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
     public ApplicationSecurityConfigurator(
             FinancialLoggerUserRepository financialLoggerUserRepository,
-            JwtFilter jwtFilter) {
+            JwtFilter jwtFilter,
+            JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint) {
         this.financialLoggerUserRepository = financialLoggerUserRepository;
         this.jwtFilter = jwtFilter;
+        this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
     }
 
     @Override
@@ -44,7 +51,8 @@ public class ApplicationSecurityConfigurator extends WebSecurityConfigurerAdapte
         http
                 .authorizeRequests()
                 .antMatchers("/css/**", "/js/**", "/images/**").permitAll()
-                .antMatchers("/api/public/**").permitAll()
+                .antMatchers("/api/v1/authenticate").permitAll()
+                .antMatchers("/h2-console/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -54,8 +62,7 @@ public class ApplicationSecurityConfigurator extends WebSecurityConfigurerAdapte
         //Set Exception handler for unauthorized requests
         http
                 .exceptionHandling()
-                .authenticationEntryPoint(((request, response, authException) -> response
-                                .sendError(HttpServletResponse.SC_UNAUTHORIZED, authException.getMessage())))
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .and();
 
         //Set JWT filter

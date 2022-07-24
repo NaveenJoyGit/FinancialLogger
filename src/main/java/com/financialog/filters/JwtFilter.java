@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -30,34 +31,28 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
+        String username = null;
+        String jwt = null;
         String authHeader = request.getHeader(HttpConstants.AUTHORIZATION_HEADER_KEY);
         if (authHeader != null && !authHeader.isBlank() && authHeader.startsWith(HttpConstants.BEARER_HEADER)) {
-            String jwt = authHeader.substring(7);
-            if (jwt.isBlank()) {
-                // Invalid JWT
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid Bearer token in header.");
-            } else {
-                try {
-                    String username = jwtUtil.validateToken(jwt);
-                    UserDetails userDetails = userRepo.findByUsername(username).orElseThrow(IllegalStateException::new);
+            jwt = authHeader.substring(7);
+            username = jwtUtil.extractUsername(jwt);
+        }
 
-                    //Create authentication token for spring security context
-                    UsernamePasswordAuthenticationToken authToken =
-                            new UsernamePasswordAuthenticationToken(
-                                    userDetails,
-                                    userDetails.getPassword(),
-                                    userDetails.getAuthorities() == null ? List.of() : userDetails.getAuthorities());
+        // Check if security context is null
+        if(username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            UserDetails user = userRepo.findByUsername(username).orElseThrow(IllegalArgumentException::new);
 
-                    //Setting principal to spring security context
-                    if (SecurityContextHolder.getContext().getAuthentication() == null) {
-                        SecurityContextHolder.getContext().setAuthentication(authToken);
-                    }
-                } catch (Exception e) {
-                    response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid JWT.");
-                }
-
+            if(jwtUtil.validateToken(jwt, user)) {
+                UsernamePasswordAuthenticationToken authenticationToken
+                        = new UsernamePasswordAuthenticationToken(user.getUsername(), null,
+                        user.getAuthorities() == null ? List.of() : user.getAuthorities());
+                authenticationToken
+                        .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             }
         }
+
         filterChain.doFilter(request, response);
     }
 }
