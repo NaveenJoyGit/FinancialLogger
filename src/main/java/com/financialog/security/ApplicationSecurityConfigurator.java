@@ -52,6 +52,7 @@ public class ApplicationSecurityConfigurator extends WebSecurityConfigurerAdapte
                 .authorizeRequests()
                 .antMatchers("/css/**", "/js/**", "/images/**").permitAll()
                 .antMatchers("/api/v1/authenticate").permitAll()
+                .antMatchers("https://www1.nseindia.com/live_market/*").permitAll()
                 .antMatchers("/h2-console/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
@@ -85,7 +86,6 @@ public class ApplicationSecurityConfigurator extends WebSecurityConfigurerAdapte
         auth.userDetailsService(username ->
                 financialLoggerUserRepository.findByUsername(username)
                         .orElseThrow(IllegalStateException::new));
-        //TODO: Provide JWT Authentication manager
     }
 
     @Bean
