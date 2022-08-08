@@ -2,6 +2,7 @@ package com.financialog.util;
 
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.lang.annotation.*;
@@ -11,6 +12,7 @@ import java.lang.annotation.*;
 @Documented
 @Component
 @RequestMapping("/api/v1")
+@CrossOrigin
 public @interface FinLogControllerPrefix {
 
     @AliasFor(annotation = Component.class)
