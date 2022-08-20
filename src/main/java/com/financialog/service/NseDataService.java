@@ -30,9 +30,10 @@ public class NseDataService {
             logger.info(successMessage);
             return ResponseGenerator.getSuccessResponse(stockData, successMessage);
         } catch (Exception e) {
-            logger.error("Exception occured for stock {}", symbol);
+            logger.error("Exception occurred for stock {}", symbol);
             return ResponseGenerator.getFailureResponse(null, "Exception occurred" + e.getMessage());
         }
     }
+
 
 }
