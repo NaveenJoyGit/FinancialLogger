@@ -10,19 +10,19 @@ public class Stock {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private Integer stockId;
     private String name;
     private String code;
     private String category;
 
     public Stock(){}
 
-    public Integer getId() {
-        return id;
+    public Integer getStockId() {
+        return stockId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setStockId(Integer stockId) {
+        this.stockId = stockId;
     }
 
     public String getName() {
