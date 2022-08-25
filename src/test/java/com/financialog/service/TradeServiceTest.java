@@ -21,9 +21,12 @@ class TradeServiceTest {
     @Mock
     TradeServiceFactory tradeServiceFactoryMock;
 
+    @Mock
+    SwingTradeService swingTradeServiceMock;
+
     @Test
     void testGetTradeServiceImplementation() {
-        given(tradeServiceFactoryMock.getTradeService(any())).willReturn(new SwingTradeService());
+        given(tradeServiceFactoryMock.getTradeService(any())).willReturn(swingTradeServiceMock);
         CommonResponse<String> response = tradeServiceMock.addTrade(getMockTradeRequestDto());
         assertThat(response.getResponseCode()).isEqualTo(CommonResponse.ResponseCodeEnum.SUCCESS.getCode());
     }

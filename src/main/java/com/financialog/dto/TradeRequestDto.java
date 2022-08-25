@@ -2,13 +2,21 @@ package com.financialog.dto;
 
 public class TradeRequestDto {
     private String stockName;
-    private int buyQuantity;
-    private float buyPrice;
+    private Integer buyQuantity;
+    private Float buyPrice;
     private String tradeType;
     private String tradeDescription;
 
 
     public TradeRequestDto() {
+    }
+
+    public TradeRequestDto(String stockName, Integer buyQuantity, Float buyPrice, String tradeType, String tradeDescription) {
+        this.stockName = stockName;
+        this.buyQuantity = buyQuantity;
+        this.buyPrice = buyPrice;
+        this.tradeType = tradeType;
+        this.tradeDescription = tradeDescription;
     }
 
     public String getStockName() {
@@ -19,19 +27,19 @@ public class TradeRequestDto {
         this.stockName = stockName;
     }
 
-    public int getBuyQuantity() {
+    public Integer getBuyQuantity() {
         return buyQuantity;
     }
 
-    public void setBuyQuantity(int buyQuantity) {
+    public void setBuyQuantity(Integer buyQuantity) {
         this.buyQuantity = buyQuantity;
     }
 
-    public float getBuyPrice() {
+    public Float getBuyPrice() {
         return buyPrice;
     }
 
-    public void setBuyPrice(float buyPrice) {
+    public void setBuyPrice(Float buyPrice) {
         this.buyPrice = buyPrice;
     }
 

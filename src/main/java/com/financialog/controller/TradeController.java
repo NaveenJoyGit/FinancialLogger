@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @FinLogControllerPrefix
-@RequestMapping("/trade")
 public class TradeController {
 
     @Autowired
@@ -23,9 +22,13 @@ public class TradeController {
     }
 
     @PreAuthorize("hasRole('USER')")
-    @PostMapping("/save")
+    @PostMapping("/trade/save")
     public CommonResponse<String> saveTrade(@RequestBody TradeRequestDto tradeDto) {
-        return tradeService.addTrade(tradeDto);
+        try {
+            return tradeService.addTrade(tradeDto);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
 

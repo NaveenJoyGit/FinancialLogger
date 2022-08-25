@@ -34,7 +34,7 @@ public class CommonResponse<T> {
 		this.responseMessage = responseMessage;
 	}
 
-	public Object getResponseData() {
+	public T getResponseData() {
 		return responseData;
 	}
 
