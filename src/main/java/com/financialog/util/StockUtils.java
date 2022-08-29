@@ -12,7 +12,7 @@ public class StockUtils {
     public static final double MID_CAP__LOWER_BOUND = 5_000;
 
     public static String getSectorByMarketCap(double tradedCap) {
-        double approxActualMarketCap = tradedCap * SECTOR_CAP_FACTOR;
+        double approxActualMarketCap = (tradedCap * SECTOR_CAP_FACTOR)/10000000;
         if(approxActualMarketCap > LARGE_CAP_LOWER_BOUND)
             return StockConstants.LARGE_CAP.name();
         else if (approxActualMarketCap < LARGE_CAP_LOWER_BOUND && approxActualMarketCap > MID_CAP__LOWER_BOUND)
@@ -21,9 +21,14 @@ public class StockUtils {
 
     }
 
-    public static double getTotalTradedValueAsLong(String totalTradedValue) {
+    public static double getTotalTradedValueAsDouble(String totalTradedValue) {
         totalTradedValue = totalTradedValue.replaceAll(",", "");
         double totalTradedValueAsDouble = Double.parseDouble(totalTradedValue);
         return totalTradedValueAsDouble;
     }
+
+    public static Float getPercentageChange(Float stockPrice, Float buyPrice) {
+        return ((stockPrice - buyPrice) / buyPrice) * 100;
+    }
+
 }

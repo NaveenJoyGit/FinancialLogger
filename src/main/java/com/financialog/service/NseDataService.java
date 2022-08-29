@@ -5,6 +5,8 @@ import com.financialog.dto.StockData;
 import com.financialog.providers.QuoteApiParameter;
 import com.financialog.providers.StockDataFetch;
 import com.financialog.util.ResponseGenerator;
+import com.financialog.util.StockSubject;
+import com.financialog.util.TradePriceSubscriber;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +24,12 @@ public class NseDataService {
     @Qualifier("nseDataFetch")
     StockDataFetch stockDataFetch;
 
-
     public CommonResponse<StockData> getNseStockData(String symbol) {
         try {
             StockData stockData = stockDataFetch.fetchStockData(new QuoteApiParameter(Arrays.asList(symbol)));
             String successMessage = "Successfully retrieved stock data";
+
+            //TODO: Update all trades with the new stock price
             logger.info(successMessage);
             return ResponseGenerator.getSuccessResponse(stockData, successMessage);
         } catch (Exception e) {

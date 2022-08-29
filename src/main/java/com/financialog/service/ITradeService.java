@@ -10,4 +10,6 @@ public interface ITradeService {
 
     void getTradeDetails();
 
+    void completeTrade();
+
 }

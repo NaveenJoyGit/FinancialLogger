@@ -39,13 +39,13 @@ class SwingTradeServiceTest {
 
     @Test
     void testAddTradeWithStockNameAlreadyPresent() {
-        when(stockRepositoryMock.findByName(getTradeRequestDto().getStockName())).thenReturn(Optional.of(new Stock()));
+        when(stockRepositoryMock.findByCode(getTradeRequestDto().getStockName())).thenReturn(Optional.of(new Stock()));
         assertDoesNotThrow(() -> swingTradeServiceMock.addTrade(getTradeRequestDto()));
     }
 
     @Test
     void testAddTradeWithNoStockNamePresent() throws JsonProcessingException {
-        when(stockRepositoryMock.findByName(getTradeRequestDto().getStockName())).thenReturn(Optional.ofNullable(null));
+        when(stockRepositoryMock.findByCode(getTradeRequestDto().getStockName())).thenReturn(Optional.ofNullable(null));
         CommonResponse<StockData> commonResponse = new CommonResponse<>(null, null, getStockDataDto());
         when(nseDataServiceMock.getNseStockData(getTradeRequestDto().getStockName()))
                 .thenReturn(commonResponse);
@@ -57,7 +57,7 @@ class SwingTradeServiceTest {
         StockData stockData = new StockData();
         ObjectMapper mapper = new ObjectMapper();
         JsonNode metadata = mapper.readTree(getMetadataString());
-        stockData.setStockName("TCS").setCurrentPrice("2000").setMetadata(metadata);
+        stockData.setStockName("TCS").setCurrentPrice("3,223.95").setMetadata(metadata);
         return stockData;
     }
 

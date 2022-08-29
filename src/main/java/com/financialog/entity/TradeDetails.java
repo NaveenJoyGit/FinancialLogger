@@ -1,6 +1,8 @@
 package com.financialog.entity;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 
 @Entity
@@ -15,6 +17,12 @@ public class TradeDetails {
     private Integer quantity;
     private String tradeStatus;
     private String tradeType;
+    private Float buyPrice;
+    private Float tradeValue;
+    private String tradeDescription;
+    private Float profitOrLoss;
+    private Float percentageChange;
+    private Float percentageOfCapital;
     private Date buyDate;
     private Date sellDate;
     private Boolean isShortSell;
@@ -58,6 +66,54 @@ public class TradeDetails {
 
     public void setTradeType(String tradeType) {
         this.tradeType = tradeType;
+    }
+
+    public Float getBuyPrice() {
+        return buyPrice;
+    }
+
+    public void setBuyPrice(Float buyPrice) {
+        this.buyPrice = buyPrice;
+    }
+
+    public Float getTradeValue() {
+        return tradeValue;
+    }
+
+    public void setTradeValue(Float tradeValue) {
+        this.tradeValue = tradeValue;
+    }
+
+    public String getTradeDescription() {
+        return tradeDescription;
+    }
+
+    public void setTradeDescription(String tradeDescription) {
+        this.tradeDescription = tradeDescription;
+    }
+
+    public Float getProfitOrLoss() {
+        return profitOrLoss;
+    }
+
+    public void setProfitOrLoss(Float profitOrLoss) {
+        this.profitOrLoss = profitOrLoss;
+    }
+
+    public Float getPercentageChange() {
+        return percentageChange;
+    }
+
+    public void setPercentageChange(Float percentageChange) {
+        this.percentageChange = percentageChange;
+    }
+
+    public Float getPercentageOfCapital() {
+        return percentageOfCapital;
+    }
+
+    public void setPercentageOfCapital(Float percentageOfCapital) {
+        this.percentageOfCapital = percentageOfCapital;
     }
 
     public Date getBuyDate() {

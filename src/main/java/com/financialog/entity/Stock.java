@@ -1,5 +1,7 @@
 package com.financialog.entity;
 
+import com.financialog.util.StockSubject;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,6 +16,7 @@ public class Stock {
     private String name;
     private String code;
     private String category;
+    private Float lastUpdatedPrice;
 
     public Stock(){}
 
@@ -47,5 +50,14 @@ public class Stock {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public Float getLastUpdatedPrice() {
+        return lastUpdatedPrice;
+    }
+
+    public void setLastUpdatedPrice(StockSubject subject, Float lastUpdatedPrice) {
+        this.lastUpdatedPrice = lastUpdatedPrice;
+        subject.notifySubscribers(this);
     }
 }
