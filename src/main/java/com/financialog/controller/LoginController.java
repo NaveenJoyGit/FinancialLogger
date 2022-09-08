@@ -2,9 +2,12 @@ package com.financialog.controller;
 
 import com.financialog.dto.AuthRequest;
 import com.financialog.dto.CommonResponse;
+import com.financialog.dto.SignuUpDto;
+import com.financialog.service.SignUpService;
 import com.financialog.service.UserDetailServiceImpl;
 import com.financialog.util.FinLogControllerPrefix;
 import com.financialog.util.JwtUtil;
+import com.financialog.util.ResponseGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +33,9 @@ public class LoginController {
     private UserDetailServiceImpl userDetailService;
 
     @Autowired
+    private SignUpService signUpService;
+
+    @Autowired
     private JwtUtil jwtUtil;
 
     @PostMapping("/authenticate")
@@ -48,6 +54,16 @@ public class LoginController {
         return ResponseEntity.ok()
                 .body(new CommonResponse<String>(CommonResponse.ResponseCodeEnum.SUCCESS.getCode(),
                 "Successfully Authenticated", jwtUtil.generateToken(userDetails)));
+    }
+
+    @PostMapping("/sign-up")
+    public ResponseEntity<?> signUpUser(@RequestBody SignuUpDto signuUpDto) {
+        try {
+            signUpService.saveUserDetails(signuUpDto);
+            return ResponseEntity.ok().body(ResponseGenerator.getSuccessResponse("Successfully registered user", "Successfully registered user"));
+        } catch (Exception e) {
+            return ResponseEntity.unprocessableEntity().body("Cannot save user details");
+        }
     }
 
 }

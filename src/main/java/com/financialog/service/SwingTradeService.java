@@ -2,12 +2,14 @@ package com.financialog.service;
 
 import com.financialog.dto.StockData;
 import com.financialog.dto.TradeRequestDto;
+import com.financialog.entity.FinancialLoggerUser;
 import com.financialog.entity.Stock;
 import com.financialog.entity.TradeDetails;
 import com.financialog.enums.HoldStatus;
 import com.financialog.enums.TradeTypeEnum;
 import com.financialog.repository.StockRepository;
 import com.financialog.repository.TradeDetailsRepository;
+import com.financialog.security.AuthenticationFacade;
 import com.financialog.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +33,7 @@ public class SwingTradeService implements ITradeService {
     private StockSubject stockSubject;
     private TradePriceSubscriber tradePriceSubscriber;
     private StockService stockService;
+    private AuthenticationFacade authenticationFacade;
 
     @Autowired
     public SwingTradeService(TradeDetailsRepository tradeDetailsRepository,
@@ -40,7 +43,8 @@ public class SwingTradeService implements ITradeService {
                              CapitalEmployedSubscriber capitalEmployedSubscriber,
                              StockSubject stockSubject,
                              TradePriceSubscriber tradePriceSubscriber,
-                             StockService stockService) {
+                             StockService stockService,
+                             AuthenticationFacade authenticationFacade) {
         this.tradeDetailsRepository = tradeDetailsRepository;
         this.stockRepository = stockRepository;
         this.nseDataService = nseDataService;
@@ -51,6 +55,7 @@ public class SwingTradeService implements ITradeService {
         this.tradePriceSubscriber = tradePriceSubscriber;
         this.stockSubject.subscribe(tradePriceSubscriber);
         this.stockService = stockService;
+        this.authenticationFacade = authenticationFacade;
     }
 
     public SwingTradeService() {
@@ -60,10 +65,12 @@ public class SwingTradeService implements ITradeService {
     public void addTrade(TradeRequestDto tradeRequestDto) {
         TradeDetails tradeDetails = new TradeDetails();
         try {
+            FinancialLoggerUser currentUser = authenticationFacade.getLoggedInUser();
             Stock stock = fetchOrAddStockDetails(tradeRequestDto.getStockName());
             float tradeValue = tradeRequestDto.getBuyQuantity() * tradeRequestDto.getBuyPrice();
             capitalEmployedSubject.updateCapital(tradeDetails, tradeValue);
             tradeDetails.setStockId(stock);
+            tradeDetails.setUser(currentUser);
         } catch (Exception e) {
             logger.info(e.getMessage());
             throw e;

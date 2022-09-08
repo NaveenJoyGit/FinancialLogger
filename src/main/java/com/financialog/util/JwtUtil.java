@@ -45,6 +45,7 @@ public class JwtUtil {
         Map<String, Object> claims = new HashMap<>();
         String roles = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining(","));
         claims.put("roles", roles);
+        claims.put("isAccntExpired", userDetails.isAccountNonExpired());
         return createToken(claims, userDetails.getUsername());
     }
 

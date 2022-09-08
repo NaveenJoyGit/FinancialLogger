@@ -14,6 +14,9 @@ public class TradeDetails {
     @OneToOne
     @JoinColumn(name = "stock_id", referencedColumnName = "stockId")
     private Stock stockId;
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private FinancialLoggerUser user;
     private Integer quantity;
     private String tradeStatus;
     private String tradeType;
@@ -43,6 +46,15 @@ public class TradeDetails {
     public void setStockId(Stock stockId) {
         this.stockId = stockId;
     }
+
+    public FinancialLoggerUser getUser() {
+        return user;
+    }
+
+    public void setUser(FinancialLoggerUser user) {
+        this.user = user;
+    }
+
 
     public Integer getQuantity() {
         return quantity;

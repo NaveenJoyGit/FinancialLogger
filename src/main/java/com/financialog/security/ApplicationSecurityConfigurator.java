@@ -52,6 +52,7 @@ public class ApplicationSecurityConfigurator extends WebSecurityConfigurerAdapte
                 .authorizeRequests()
                 .antMatchers("/css/**", "/js/**", "/images/**").permitAll()
                 .antMatchers("/api/v1/authenticate").permitAll()
+                .antMatchers("/api/v1/sign-up").permitAll()
                 .antMatchers("https://www1.nseindia.com/live_market/*").permitAll()
                 .antMatchers("/h2-console/**").permitAll()
                 .anyRequest().authenticated()
