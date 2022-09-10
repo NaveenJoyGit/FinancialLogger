@@ -20,6 +20,6 @@ This is achieved using observer pattern
 <br/>
 View Trade API retrieves the stock data of the currently logged in user based on the JWT token
 <br/><br/>
-UI application for this service is developed using Angular github url <https://github.com/NaveenJoyGit/FinancialLoggerUI>
+UI application for this service is developed using Angular github url https://github.com/NaveenJoyGit/FinancialLoggerUI
 
 <br/>
