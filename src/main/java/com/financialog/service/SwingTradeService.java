@@ -1,6 +1,6 @@
 package com.financialog.service;
 
-import com.financialog.dto.StockData;
+import com.financialog.dto.TradeDetailsDto;
 import com.financialog.dto.TradeRequestDto;
 import com.financialog.entity.FinancialLoggerUser;
 import com.financialog.entity.Stock;
@@ -16,9 +16,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class SwingTradeService implements ITradeService {
@@ -68,6 +69,7 @@ public class SwingTradeService implements ITradeService {
             FinancialLoggerUser currentUser = authenticationFacade.getLoggedInUser();
             Stock stock = fetchOrAddStockDetails(tradeRequestDto.getStockName());
             float tradeValue = tradeRequestDto.getBuyQuantity() * tradeRequestDto.getBuyPrice();
+            // TODO: Change capital employed logic to encorporate based on user
             capitalEmployedSubject.updateCapital(tradeDetails, tradeValue);
             tradeDetails.setStockId(stock);
             tradeDetails.setUser(currentUser);
@@ -92,8 +94,18 @@ public class SwingTradeService implements ITradeService {
     }
 
     @Override
-    public void getTradeDetails() {
-        //TODO: Code to get Details of trade already logged by the user
+    public List<TradeDetailsDto> getTradeDetails() {
+        //TODO: Code to get Details of swing trades of already logged in user
+        List<TradeDetails> userTrades = tradeDetailsRepository.findByUser(authenticationFacade.getLoggedInUser());
+        return userTrades.stream().map(this::setTradeDetailsDto).collect(Collectors.toList());
+    }
+
+    public TradeDetailsDto setTradeDetailsDto(TradeDetails tradeEntity) {
+        return TradeDetailsDto.tradeDetailsBuilder()
+                .setBuyPrice(tradeEntity.getBuyPrice().toString())
+                .setPercentageChange(tradeEntity.getPercentageChange().toString())
+                .setStockName(tradeEntity.getStockId().getName())
+                .setTradeStatus(tradeEntity.getTradeStatus());
     }
 
     @Override

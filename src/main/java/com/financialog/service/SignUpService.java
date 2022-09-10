@@ -34,6 +34,7 @@ public class SignUpService {
     @Transactional
     public void saveUserDetails(SignuUpDto signuUpDto) {
         try {
+            if(userRepository.findByUsername(signuUpDto.getUserName()).isPresent()) throw new IllegalArgumentException("Username already present");
             FinancialLoggerUser user = new FinancialLoggerUser();
             user.setUsername(signuUpDto.getUserName());
             user.setFirstName(signuUpDto.getFirstName());

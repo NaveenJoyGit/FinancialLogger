@@ -2,6 +2,7 @@ package com.financialog.util;
 
 import com.financialog.entity.TradeDetails;
 import com.financialog.repository.TradeDetailsRepository;
+import com.financialog.security.AuthenticationFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +15,9 @@ public class CapitalEmployedSubject implements EventManager<Float>{
 
     @Autowired
     TradeDetailsRepository tradeDetailsRepository;
+
+    @Autowired
+    AuthenticationFacade authenticationFacade;
 
     List<EventListener<Float>> listeners = new ArrayList<>();
 
@@ -33,7 +37,7 @@ public class CapitalEmployedSubject implements EventManager<Float>{
     }
 
     public void updateCapital(TradeDetails tradeDetails, Float tradeValue) {
-        Optional<Float> totalTradeCapitalOpt = tradeDetailsRepository.getTotalTradeCapital();
+        Optional<Float> totalTradeCapitalOpt = tradeDetailsRepository.getTotalTradeCapital(authenticationFacade.getLoggedInUser());
         tradeDetails.setTradeValue(tradeValue);
         Float percentageOfCapital = totalTradeCapitalOpt.map(tradeCap -> tradeValue * 100 / (tradeCap + tradeValue)).orElse(100f);
         tradeDetails.setPercentageOfCapital(percentageOfCapital);

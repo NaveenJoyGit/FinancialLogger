@@ -6,7 +6,7 @@ public class TradeDto {
 	
 	Integer id;
 	StockDto stock;
-	TradeDetails details;
+	TradeDetailsDto details;
 	String status;
 	Date creationDate;
 

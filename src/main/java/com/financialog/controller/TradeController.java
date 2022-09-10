@@ -1,12 +1,15 @@
 package com.financialog.controller;
 
 import com.financialog.dto.CommonResponse;
+import com.financialog.dto.TradeDetailsDto;
 import com.financialog.dto.TradeRequestDto;
 import com.financialog.service.TradeService;
 import com.financialog.util.FinLogControllerPrefix;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @FinLogControllerPrefix
@@ -29,6 +32,12 @@ public class TradeController {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/trade/view-all")
+    public CommonResponse<List<TradeDetailsDto>> viewAllTrades() {
+        return tradeService.viewAllTrades();
     }
 
 

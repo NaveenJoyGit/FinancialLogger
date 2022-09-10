@@ -61,6 +61,8 @@ public class LoginController {
         try {
             signUpService.saveUserDetails(signuUpDto);
             return ResponseEntity.ok().body(ResponseGenerator.getSuccessResponse("Successfully registered user", "Successfully registered user"));
+        } catch (IllegalArgumentException ia) {
+          return ResponseEntity.ok(ResponseGenerator.getFailureResponse("User Already Present", "Invalid Username"));
         } catch (Exception e) {
             return ResponseEntity.unprocessableEntity().body("Cannot save user details");
         }
