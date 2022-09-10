@@ -1,28 +1,28 @@
 package com.financialog.dto;
 
-public class CommonResponse {
+public class CommonResponse<T> {
 	
-	private ResponseCodeEnum responseCode;
+	private String responseCode;
 	
 	private String responseMessage;
 	
-	private Object responseData;
+	private T responseData;
 	
 	public CommonResponse() {
 		
 	}
 	
-	public CommonResponse(ResponseCodeEnum code, String message, Object data) {
+	public CommonResponse(String code, String message, T data) {
 		this.responseCode = code;
 		this.responseMessage = message;
 		this.responseData = data;
 	}
 	
-	public ResponseCodeEnum getResponseCode() {
+	public String getResponseCode() {
 		return responseCode;
 	}
 
-	public void setResponseCode(ResponseCodeEnum responseCode) {
+	public void setResponseCode(String responseCode) {
 		this.responseCode = responseCode;
 	}
 
@@ -34,18 +34,18 @@ public class CommonResponse {
 		this.responseMessage = responseMessage;
 	}
 
-	public Object getResponseData() {
+	public T getResponseData() {
 		return responseData;
 	}
 
-	public void setResponseData(Object responseData) {
+	public void setResponseData(T responseData) {
 		this.responseData = responseData;
 	}
 
 	public  enum ResponseCodeEnum {
 		
 		SUCCESS("2001"), FAILURE("4001"),
-		VALIDATION("4002"), UNAUTHIRIZED("4003");
+		VALIDATION("4002"), UNAUTHORIZED("4003");
 		
 		private String statusCode;
 		
