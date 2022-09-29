@@ -25,7 +25,8 @@ public class CapitalEmployedSubscriber implements EventListener<Float> {
     @Override
     public void update(Float newCapital) {
         logger.info("Updating Percentage of capital employed for all trades based on new Capital : {}", newCapital);
-        List<TradeDetails> allTrades = tradeDetailsRepository.findByTradeStatusAndUser(HoldStatus.ACTIVE.name(), authenticationFacade.getLoggedInUser());
+        List<TradeDetails> allTrades = tradeDetailsRepository
+                .findByTradeStatusAndUser(HoldStatus.ACTIVE.name(), authenticationFacade.getLoggedInUser());
         allTrades.forEach(tradeDetails ->
                 tradeDetails.setPercentageOfCapital(tradeDetails.getTradeValue() * 100 / newCapital));
         tradeDetailsRepository.saveAll(allTrades);

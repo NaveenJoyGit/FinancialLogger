@@ -26,10 +26,8 @@ public class NseHttpClient {
      */
     public HttpResponse<String> getStockQuoteData(List<ApiParameter> params) {
         String urlParams = getParams(params);
-        String symbol = params.stream().map(param -> param.getValue()).collect(Collectors.joining());
-
+        String symbol = params.stream().map(ApiParameter::getValue).collect(Collectors.joining());
         HttpClient client = HttpClient.newHttpClient();
-
         try {
             HttpRequest request = HttpRequest.newBuilder()
                     .GET()

@@ -2,6 +2,7 @@ package com.financialog.service;
 
 import com.financialog.dto.StockData;
 import com.financialog.providers.*;
+import com.financialog.util.ExecutionLogging;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ public class NseStockDataFetchService implements StockDataFetch {
     JsonDeserializer<StockData> stockDataParser;
 
     @Override
+    @ExecutionLogging
     public StockData fetchStockData(ApiParameter... params) {
         logger.info("Inside NseStockDataFetch Service.");
         NseHttpClient nseClient = new NseHttpClient();
