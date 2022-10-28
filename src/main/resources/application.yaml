@@ -1,16 +1,14 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:financial-logger
-    username: sa
-    password: password
-    driverClassName: org.h2.Driver
+    url: jdbc:postgresql://localhost:5432/FinLogDB
+    username: postgres
+    password: Guitar@600
+    driverClassName: org.postgresql.Driver
   jpa:
-    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+    spring.jpa.database-platform: org.hibernate.dialect.PostgreSQLDialect
     defer-datasource-initialization: true
     show-sql: true
-  #http://localhost:8080/h2-console
-  h2:
-    console.enabled: true
+    hibernate.ddl-auto: update
 
 application:
   jwt:
