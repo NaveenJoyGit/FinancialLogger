@@ -3,10 +3,13 @@ spring:
     url: jdbc:postgresql://localhost:5432/FinLogDB
     username: postgres
     password: Guitar@600
-    driverClassName: org.postgresql.Driver
+    platform: postgres
   jpa:
-    spring.jpa.database-platform: org.hibernate.dialect.PostgreSQLDialect
-    defer-datasource-initialization: true
+    database: POSTGRESQL
+    properties..hibernate:
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+      format-sql: true
+    generate-ddl: true
     show-sql: true
     hibernate.ddl-auto: update
 
