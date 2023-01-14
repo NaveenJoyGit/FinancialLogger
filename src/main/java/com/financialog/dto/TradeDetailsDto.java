@@ -4,7 +4,7 @@ public class TradeDetailsDto {
 	private String stockName;
 	private String buyPrice;
 	private String currentPrice;
-	private String percentageChange;
+	private String profitOrLoss;
 	private String tradeStatus;
 	private String tradeValue;
 
@@ -39,12 +39,12 @@ public class TradeDetailsDto {
 		return this;
 	}
 
-	public String getPercentageChange() {
-		return percentageChange;
+	public String getProfitOrLoss() {
+		return profitOrLoss;
 	}
 
-	public TradeDetailsDto setPercentageChange(String percentageChange) {
-		this.percentageChange = percentageChange;
+	public TradeDetailsDto setProfitOrLoss(String profitOrLoss) {
+		this.profitOrLoss = profitOrLoss;
 		return this;
 	}
 
