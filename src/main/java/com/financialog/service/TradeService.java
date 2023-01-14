@@ -10,7 +10,6 @@ import com.financialog.util.ResponseGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -67,7 +66,7 @@ public class TradeService {
         return TradeDetailsDto.tradeDetailsBuilder()
                 .setBuyPrice(tradeEntity.getBuyPrice().toString())
                 .setCurrentPrice(tradeEntity.getStockId().getLastUpdatedPrice().toString())
-                .setPercentageChange(ObjectUtils.isEmpty(tradeEntity.getPercentageChange()) ? "" : tradeEntity.getPercentageChange().toString())
+                .setProfitOrLoss(ObjectUtils.isEmpty(tradeEntity.getProfitOrLoss()) ? "" : tradeEntity.getProfitOrLoss().toString())
                 .setStockName(tradeEntity.getStockId().getName())
                 .setTradeStatus(tradeEntity.getTradeStatus())
                 .setTradeValue(tradeEntity.getTradeValue().toString());

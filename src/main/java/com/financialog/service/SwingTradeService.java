@@ -69,10 +69,10 @@ public class SwingTradeService implements ITradeService {
             FinancialLoggerUser currentUser = authenticationFacade.getLoggedInUser();
             Stock stock = fetchOrAddStockDetails(tradeRequestDto.getStockName());
             float tradeValue = tradeRequestDto.getBuyQuantity() * tradeRequestDto.getBuyPrice();
-            // TODO: Change capital employed logic to encorporate based on user
             capitalEmployedSubject.updateCapital(tradeDetails, tradeValue);
             tradeDetails.setStockId(stock);
             tradeDetails.setUser(currentUser);
+            tradeDetails.setProfitOrLoss((stock.getLastUpdatedPrice() * tradeRequestDto.getBuyQuantity()) - tradeValue);
         } catch (Exception e) {
             logger.info(e.getMessage());
             throw e;
@@ -103,7 +103,7 @@ public class SwingTradeService implements ITradeService {
     public TradeDetailsDto setTradeDetailsDto(TradeDetails tradeEntity) {
         return TradeDetailsDto.tradeDetailsBuilder()
                 .setBuyPrice(tradeEntity.getBuyPrice().toString())
-                .setPercentageChange(tradeEntity.getPercentageChange().toString())
+                .setProfitOrLoss(tradeEntity.getPercentageChange().toString())
                 .setStockName(tradeEntity.getStockId().getName())
                 .setTradeStatus(tradeEntity.getTradeStatus());
     }
